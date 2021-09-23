@@ -92,15 +92,21 @@ int main(){
 			Else_flag = false;
 		}
 	}
-	cout<<"total num: "<<Num_keyword<<endl;
-	cout<<"switch num: "<<Num_switch<<endl;
-	cout<<"case num:";
-	for(int j = 0; j < Num_switch; j++)
+		if(level == 1)
 	{
-		cout<<" "<<Num_case[j];
+			cout<<"total num: "<<Num_keyword<<endl;
+	} 
+	if(level == 2)
+	{
+		cout<<"switch num: "<<Num_switch<<endl;
+		cout<<"case num:";
+		for(int j = 0; j < Num_switch; j++)
+		{
+			cout<<" "<<Num_case[j];
+		}
+		cout<<endl;
 	}
-	cout<<endl;
-
+	
 	in.close();
 	return 0;
 }
