@@ -1,0 +1,106 @@
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+char filename[100];
+string word ="";
+string keyword[32]={"auto","break;","case","char","const","continue","default","double","do","else","enum","extern","float","for",
+                    "goto","if","int","long","register","return","short","signed","sizeof","static","struct","switch","typedef",
+                    "union","unsigned","void","volatile","while"};//建立关键词库。 
+int Num_keyword, Num_switch, Num_ifelse, Num_ifelseifelse, level = 0;
+int Num_case[100] = {0};
+bool If_flag, Else_flag, flag;
+//建立栈 
+#define N 10 
+typedef struct stack
+{
+	int top;
+	int data[N];
+}Stack;
+
+int main(){
+	cout<<"Enter the path to the file:";
+	cin>>filename;
+	cout<<"Enter the completion level:";
+	cin>>level;
+	
+	ifstream in(filename);
+	
+	// 确保文本打开。 
+	if (!in.is_open())
+	{ 
+		cout << "Error opening file"; 
+		exit(1);
+	}
+	
+	while (!in.eof())
+	{
+	    in>>word;//读取文本为字符。 
+	    //level1:
+		for (int i = 0; i < 32; i++)
+		{
+			if (word.find(keyword[i]) != -1)//与关键词库对比。 
+			{
+				Num_keyword++;
+				break;//预防再次出现含有相同字母的关键词误判，例如double和do都含有do。 
+			}
+		}
+		//level2:
+		if (word.find(keyword[25]) != -1)//与关键词库中的switch对比。 
+		{
+			Num_switch++;
+		}
+		if (word.find(keyword[2]) != -1)//case对比。 
+		{
+			Num_case[Num_switch - 1]++;//用数组来得到不同switch下的case。 
+		}
+		//level3:
+		for (int i = 0; i < 32; i++)
+		{
+			//初始化if和else 
+			if (i == 15)
+	    	{
+		        If_flag = true;
+		    }
+		    if (i == 9)
+		    {
+		        Else_flag = true;
+		    }
+		    
+			if (If_flag == true && Else_flag == false)
+			{
+			    flag = false;
+			    Num_ifelse++;
+			    Stack[top] = 1;//if入栈 ???
+			    top++;
+			}
+			if (If_flag == false && Else_flag == true)
+			{
+			    top--;
+			    Stack[top] = 0;//if出栈 ???
+			}
+			if (If_flag == true && Else_flag == true) 
+			{
+			    if (flag == false)
+			    {
+			        Num_ifelse--;
+			        Num_ifelseifelse++;//level4
+			        flag = true;
+			    }
+			}
+			If_flag = false;
+			Else_flag = false;
+		}
+	}
+	cout<<"total num: "<<Num_keyword<<endl;
+	cout<<"switch num: "<<Num_switch<<endl;
+	cout<<"case num:";
+	for(int j = 0; j < Num_switch; j++)
+	{
+		cout<<" "<<Num_case[j];
+	}
+	cout<<endl;
+
+	in.close();
+	return 0;
+}
