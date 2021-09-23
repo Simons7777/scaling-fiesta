@@ -71,13 +71,13 @@ int main(){
 			{
 			    flag = false;
 			    Num_ifelse++;
-			    Stack[top] = 1;//if入栈 ???
+			    Stack[top] = 1;//if入栈
 			    top++;
 			}
 			if (If_flag == false && Else_flag == true)
 			{
 			    top--;
-			    Stack[top] = 0;//if出栈 ???
+			    Stack[top] = 0;//if出栈
 			}
 			if (If_flag == true && Else_flag == true) 
 			{
