@@ -71,7 +71,7 @@ int main(){
 			{
 			    flag = false;
 			    Num_ifelse++;
-			    Stack[top] = 1;//if入栈
+			    Stack[top] = 1;//if入栈 ? 不太懂
 			    top++;
 			}
 			if (If_flag == false && Else_flag == true)
