@@ -9,14 +9,10 @@ string keyword[32]={"auto","break;","case","char","const","continue","default","
                     "union","unsigned","void","volatile","while"};//建立关键词库。 
 int Num_keyword, Num_switch, Num_ifelse, Num_ifelseifelse, level = 0;
 int Num_case[100] = {0};
-bool If_flag, Else_flag, flag;
-//建立栈 
-#define N 10 
-typedef struct stack
-{
-	int top;
-	int data[N];
-}Stack;
+bool If_flag = false, Else_flag = false;
+int Stack[101] = {0};
+int top = 0;
+int flag = 0;
 
 int main(){
 	cout<<"Enter the path to the file:";
@@ -66,35 +62,35 @@ int main(){
 		    {
 		        Else_flag = true;
 		    }
-		    
-			if (If_flag == true && Else_flag == false)
-			{
-			    flag = false;
-			    Num_ifelse++;
-			    Stack[top] = 1;//if入栈 ? 不太懂
-			    top++;
-			}
-			if (If_flag == false && Else_flag == true)
-			{
-			    top--;
-			    Stack[top] = 0;//if出栈
-			}
-			if (If_flag == true && Else_flag == true) 
-			{
-			    if (flag == false)
-			    {
-			        Num_ifelse--;
-			        Num_ifelseifelse++;//level4
-			        flag = true;
-			    }
-			}
-			If_flag = false;
-			Else_flag = false;
 		}
+		if (If_flag == true && Else_flag == false)
+		{
+		    flag = 0;
+		    Num_ifelse++;
+		    Stack[top] = 1;//if入栈 
+		    top++;
+		}
+		if (If_flag == false && Else_flag == true)
+		{
+		    top--;
+		    Stack[top] = 0;//if出栈 
+		}
+		if (If_flag == true && Else_flag == true) 
+		{
+		    if (flag == 0)
+		    {
+		        Num_ifelse--;
+		        Num_ifelseifelse++;//level4
+		        flag = true;
+		    }
+		}
+		If_flag = false;
+		Else_flag = false;
 	}
-		if(level == 1)
+	
+	if(level == 1)
 	{
-			cout<<"total num: "<<Num_keyword<<endl;
+		cout<<"total num: "<<Num_keyword<<endl;
 	} 
 	if(level == 2)
 	{
@@ -105,6 +101,14 @@ int main(){
 			cout<<" "<<Num_case[j];
 		}
 		cout<<endl;
+    }
+	if(level == 3)
+	{
+		cout<<"if-else num: "<<Num_ifelse<<endl;
+	}
+	if(level == 4)
+	{
+		cout<<"if-elseif-else num: "<<Num_ifelseifelse<<endl;
 	}
 	
 	in.close();
